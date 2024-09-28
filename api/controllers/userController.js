@@ -168,3 +168,37 @@ export const updateProfileConroller = async (req, res) => {
         })
     }
 }
+
+export const updatePasswordController = async (req, res) => {
+    try {
+        const user = await userModel.findById(req.user._id);
+        const { oldPassword, newPassword } = req.body;
+        if (!oldPassword || !newPassword) {
+            return res.status(500).send({
+                success: false,
+                message: "Password Field is required"
+            })
+        }
+
+        // old password check
+        const isMatchPass = await user.comparePassword(oldPassword);
+        //validation
+        if(!isMatchPass) {
+            return res.status(500).send({
+                success: true,
+                message: "Old Password Does Not Match"
+            })
+        }
+        user.password = newPassword;
+        await user.save();
+        res.status(200).send({
+            success: true,
+            message: "Your password updated successfully"
+        })
+    } catch (error) {
+        return res.status(500).send({
+            success: false,
+            message: "error in update password api"
+        })
+    }
+}
