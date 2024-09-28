@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 // routes imports
 import connectDB from './config/db.js';
 import { registerController } from './controllers/userController.js';
-import { homeController } from './controllers/homeController.js';
 // dot env config
 
 dotenv.config();
@@ -24,7 +23,6 @@ const mongo_url = process.env.MONGO_URL;
 connectDB(mongo_url);
 
 // Router
-app.use('/api/v1', homeController);
 app.use('/api/v1/user', registerController);
 
 app.listen(port, () => {
