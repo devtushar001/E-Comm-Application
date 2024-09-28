@@ -73,9 +73,18 @@ export const loginController = async (req, res) => {
             })
         }
 
-        res.status(200).send({
+        // token 
+        const token = user.generateToken()
+
+        res.status(200).cookie("token", token, {
+            expires: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
+            secure: process.env.NODE_ENV === "Development" ? true : false,
+            httpOnly: process.env.NODE_ENV === "Development" ? true : false,
+            sameSite: process.env.NODE_ENV === "Development" ? true : false,
+        }).send({
             success: true,
             message: "User Logined Successfully",
+            token,
             user
         })
     } catch (error) {
@@ -85,5 +94,22 @@ export const loginController = async (req, res) => {
             message: "Error In Login!",
             error
         })
+    }
+}
+
+//Get user profile
+export const getUserProfileController = async (req, res) => {
+    try {
+       res.status(200).send({
+        success: true,
+        message: "User Profile Fetched Successfully"
+       })
+    } catch (error) {
+       console.log(error);
+       res.status(500).send({
+        success: false,
+        message: "Problem in getUserProfileController api",
+        error
+       })
     }
 }
