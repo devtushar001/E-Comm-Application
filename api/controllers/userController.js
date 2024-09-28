@@ -103,39 +103,68 @@ export const getUserProfileController = async (req, res) => {
     const user = req.user;
     user.password = undefined;
     try {
-       res.status(200).send({
-        success: true,
-        message: "User Profile Fetched Successfully",
-        user
-       })
+        res.status(200).send({
+            success: true,
+            message: "User Profile Fetched Successfully",
+            user
+        })
     } catch (error) {
-       console.log(error);
-       res.status(500).send({
-        success: false,
-        message: "Problem in getUserProfileController api",
-        error
-       })
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Problem in getUserProfileController api",
+            error
+        })
     }
 }
 
 // Logout
 export const logoutController = async (req, res) => {
-   try {
-     res.status(200).cookie('token', "", {
-        expires: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
-        secure: process.env.NODE_ENV === "Development" ? true : false,
-        httpOnly: process.env.NODE_ENV === "Development" ? true : false,
-        sameSite: process.env.NODE_ENV === "Development" ? true : false,
-    }).send({
-        success: true,
-        message: "User logout successfully"
-    })
-   } catch (error) {
-    console.log(error);
-       res.status(500).send({
-        success: false,
-        message: "logout api problem",
-        error
-       })
-   }
+    try {
+        res.status(200).cookie('token', "", {
+            expires: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
+            secure: process.env.NODE_ENV === "Development" ? true : false,
+            httpOnly: process.env.NODE_ENV === "Development" ? true : false,
+            sameSite: process.env.NODE_ENV === "Development" ? true : false,
+        }).send({
+            success: true,
+            message: "User logout successfully"
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "logout api problem",
+            error
+        })
+    }
+}
+
+// update profile 
+
+export const updateProfileConroller = async (req, res) => {
+    try {
+        const user = await userModel.findById(req.user._id);
+        const { name, email, address, city, country, phone } = req.body;
+        // validation
+        if (name) user.name = name;
+        if (email) user.email = email;
+        if (address) user.address = address;
+        if (city) user.city = city;
+        if (country) user.country = country;
+        if (phone) user.phone = phone;
+        // save user
+        await user.save();
+        res.status(200).send({
+            success: true,
+            message: "user updated successfully"
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "error in update-profile api",
+            error
+        })
+    }
 }
