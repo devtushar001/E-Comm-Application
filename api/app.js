@@ -3,7 +3,6 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 // routes imports
 import connectDB from './config/db.js';
-import { loginController, registerController } from './controllers/userController.js';
 import router from './routes/userRoutes.js';
 // dot env config
 
