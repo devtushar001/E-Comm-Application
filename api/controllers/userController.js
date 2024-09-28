@@ -99,10 +99,12 @@ export const loginController = async (req, res) => {
 
 //Get user profile
 export const getUserProfileController = async (req, res) => {
+    const user = req.user;
     try {
        res.status(200).send({
         success: true,
-        message: "User Profile Fetched Successfully"
+        message: "User Profile Fetched Successfully",
+        user
        })
     } catch (error) {
        console.log(error);

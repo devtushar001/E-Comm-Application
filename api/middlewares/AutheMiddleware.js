@@ -11,10 +11,10 @@ export const isAuth = async (req, res, next) => {
 
     const decodeData = JWT.verify(token, process.env.JWT_SECRET);
     req.user = await userModel.findById(decodeData._id);
-    const id = req.user._id;
-    console.log(String(id));
-    const user = await userModel.findById(id);
-    console.log(user);
+    // const id = req.user._id;
+    // console.log(String(id));
+    // const user = await userModel.findById(id);
+    // console.log(user);
     
     // res.status(200).send({
     //     success: true,
