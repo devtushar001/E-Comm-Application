@@ -172,7 +172,10 @@ export const updateProfileConroller = async (req, res) => {
 export const updatePasswordController = async (req, res) => {
     try {
         const user = await userModel.findById(req.user._id);
+        console.log(user)
         const { oldPassword, newPassword } = req.body;
+        console.log(oldPassword);
+        console.log(newPassword);
         if (!oldPassword || !newPassword) {
             return res.status(500).send({
                 success: false,
@@ -196,6 +199,8 @@ export const updatePasswordController = async (req, res) => {
             message: "Your password updated successfully"
         })
     } catch (error) {
+        console.log(error);
+        
         return res.status(500).send({
             success: false,
             message: "error in update password api"
