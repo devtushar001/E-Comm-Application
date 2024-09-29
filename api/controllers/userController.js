@@ -1,4 +1,6 @@
 import userModel from "../models/userModel.js";
+import  getDataUri from "../utils/features.js";
+import cloudinary from "cloudinary";
 
 export const registerController = async (req, res) => {
     try {
@@ -200,7 +202,6 @@ export const updatePasswordController = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
-
         return res.status(500).send({
             success: false,
             message: "error in update password api"
@@ -208,3 +209,37 @@ export const updatePasswordController = async (req, res) => {
     }
 }
 
+// Profile Picture Updating With the Multer And Cloudinary DataBase
+
+export const updateProfilePicController = async (req, res) => {
+    try {
+        const user = await userModel.findById(req.user._id);
+        const file = getDataUri(req.file);
+
+        // cloudinary
+        // delete previous image
+        await cloudinary.v2.uploader.destroy(user.profilePic.public_id);
+        // update
+        const cdb = await cloudinary.v2.uploader.upload(file.content)
+        user.profilePic = {
+            public_id: cdb.public_id,
+            url: cdb.secure_url
+        }
+
+        //save function
+
+        await user.save()
+
+        res.status(200).send({
+          success: true,
+          message: "profile picture changed successfully"
+        })
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            success: false,
+            message: "error in update profile pic api"
+        })
+    }
+}

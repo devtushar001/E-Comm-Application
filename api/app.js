@@ -2,6 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import cloudinary from 'cloudinary';
 // routes imports
 import connectDB from './config/db.js';
 import router from './routes/userRoutes.js';
@@ -25,6 +26,13 @@ const mongo_url = process.env.MONGO_URL;
 
 // Database Connection
 connectDB(mongo_url);
+
+// cloudinary config
+cloudinary.v2.config({
+    cloud_name: process.env.CLOUDNARY_NAME,
+    api_key: process.env.CLOUDNARY_API_KEY,
+    api_secret: process.env.CLOUDNARY_SECRET
+})
 
 // Router
 app.use('/api/v1/user', router);

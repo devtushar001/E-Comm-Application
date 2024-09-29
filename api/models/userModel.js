@@ -33,7 +33,12 @@ const userSchema = new mongoose.Schema({
         required: [true, 'phone should be required']
     },
     profilePic: {
-        type: String,
+        public_id: {
+            type: String,
+        },
+        url: {
+            type: String
+        }
     }
 }, { timestamps: true });
 
