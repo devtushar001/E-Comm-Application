@@ -30,13 +30,13 @@ export const getSingleProductController = async (req, res) => {
             return res.status(500).send({
                 success: false,
                 message: "single product not found",
-                singleProduct
             })
         }
 
         res.status(200).send({
             success: true,
-            message: "Single product found Successfully"
+            message: "Single product found Successfully",
+            singleProduct
         })
     } catch (error) {
         if (error.name === 'CastError') {
@@ -83,7 +83,7 @@ export const createProductController = async (req, res) => {
         };
 
         const insertedProduct = await productModel.create({
-            name, description, price, Category, stock, images:[image]
+            name, description, price, Category, stock, images: [image]
         });
 
         console.log(insertedProduct);
@@ -101,3 +101,43 @@ export const createProductController = async (req, res) => {
         });
     }
 };
+
+
+export const updateProductController = async (req, res) => {
+
+    try {
+        const product = await productModel.findById(req.params.id);
+        if (!product) {
+            return res.status(500).send({
+                success: false,
+                message: 'Product Not Found'
+            })
+        }
+        const { name, description, price, stock, Category } = req.body;
+        if (name) product.name = name;
+        if (description) product.description = description;
+        if (price) product.price = price;
+        if (stock) product.stock = stock;
+        if (Category) product.Category = Category;
+        console.log(product);
+        await product.save();
+        res.status(200).send({
+            success: true,
+            message: 'product updated successfully'
+        })
+
+    } catch (error) {
+        console.log(error);
+        if (error.name === 'CastError') {
+            return res.status(500).send({
+                success: false,
+                message: 'Cast Error You should resolve product id in params'
+            })
+        }
+        return res.status(500).send({
+            success: false,
+            message: "error in update product api"
+        })
+    }
+
+}
