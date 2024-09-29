@@ -186,7 +186,7 @@ export const updatePasswordController = async (req, res) => {
         // old password check
         const isMatchPass = await user.comparePassword(oldPassword);
         //validation
-        if(!isMatchPass) {
+        if (!isMatchPass) {
             return res.status(500).send({
                 success: true,
                 message: "Old Password Does Not Match"
@@ -200,10 +200,11 @@ export const updatePasswordController = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
-        
+
         return res.status(500).send({
             success: false,
             message: "error in update password api"
         })
     }
 }
+
