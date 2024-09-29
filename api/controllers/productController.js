@@ -59,46 +59,45 @@ export const getSingleProductController = async (req, res) => {
 export const createProductController = async (req, res) => {
     try {
         const { name, description, price, stock, Category } = req.body;
-        console.log(req.body);
+
+        // Validate fields
         if (!name || !description || !price || !stock) {
-            return res.status(500).send({
+            return res.status(400).send({
                 success: false,
-                message: 'Please Provide All Product Fields'
-            })
+                message: 'Please provide all required product fields.'
+            });
         }
 
         if (!req.file) {
-            return res.status(500).send({
+            return res.status(400).send({
                 success: false,
-                message: 'You should upload product images'
-            })
+                message: 'You should upload product images.'
+            });
         }
 
-        const file = getDataUri(req.file)
-        const cdb = await cloudinary.v2.uploader.upload(file.content)
+        const file = getDataUri(req.file);
+        const cdb = await cloudinary.v2.uploader.upload(file.content);
         const image = {
             public_id: cdb.public_id,
             url: cdb.secure_url
-        }
-
-        console.log(image);
-        
+        };
 
         const insertedProduct = await productModel.create({
             name, description, price, Category, stock, images:[image]
-        })
+        });
 
-        console.log(insertedProduct)
+        console.log(insertedProduct);
 
         return res.status(201).send({
             success: true,
-            message: 'product created successfully'
-        })
+            message: 'Product created successfully.',
+            product: insertedProduct // Optional: return the created product data
+        });
     } catch (error) {
-        console.log(error);
-        res.status(500).send({
+        console.error(error); // Use console.error for error logging
+        return res.status(500).send({
             success: false,
-            message: 'single product api error not found'
-        })
+            message: 'An error occurred while creating the product.'
+        });
     }
-}
+};
