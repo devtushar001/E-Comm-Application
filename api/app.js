@@ -5,7 +5,8 @@ import cookieParser from 'cookie-parser';
 import cloudinary from 'cloudinary';
 // routes imports
 import connectDB from './config/db.js';
-import router from './routes/userRoutes.js';
+import userRouter from './routes/userRoutes.js';
+import productRouter from './routes/productRoutes.js';
 // dot env config
 
 dotenv.config();
@@ -35,7 +36,8 @@ cloudinary.v2.config({
 })
 
 // Router
-app.use('/api/v1/user', router);
+app.use('/api/v1/user', userRouter);
+app.use('/api/v1/product', productRouter);
 
 app.listen(port, () => {
     console.log(`Server Up! ${port} on ${process.env.NODE_ENV} Mode.`);

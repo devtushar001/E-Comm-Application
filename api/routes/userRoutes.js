@@ -4,24 +4,24 @@ import { isAuth } from '../middlewares/AutheMiddleware.js';
 import { singleUpload } from '../middlewares/multer.js';
 
 // router object
-const router = express.Router()
+const userRouter = express.Router()
 
 // routes
 // router.get('/', homeController)
-router.post('/register', registerController);
+userRouter.post('/register', registerController);
 //login route
-router.post('/login', loginController);
+userRouter.post('/login', loginController);
 // profiel
-router.get('/profile', isAuth, getUserProfileController);
+userRouter.get('/profile', isAuth, getUserProfileController);
 // logout 
-router.get('/logout', isAuth, logoutController)
+userRouter.get('/logout', isAuth, logoutController)
 
 // update profile
-router.put('/update-profile', isAuth, updateProfileConroller);
+userRouter.put('/update-profile', isAuth, updateProfileConroller);
 // update password
-router.put('/update-password',isAuth, updatePasswordController);
+userRouter.put('/update-password',isAuth, updatePasswordController);
 
 
 // update profile pic
-router.put('/update-picture', isAuth, singleUpload, updateProfilePicController)
-export default router;
+userRouter.put('/update-picture', isAuth, singleUpload, updateProfilePicController)
+export default userRouter;
