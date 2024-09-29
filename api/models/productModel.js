@@ -21,12 +21,8 @@ const productSchema = new mongoose.Schema({
         ref: 'Category'
     },
     images: {
-        public_id: {
-            type: String
-        },
-        url: {
-            type: String
-        }
+        public_id: String,
+        url: String
     }
 
 }, {timestamps: true});
