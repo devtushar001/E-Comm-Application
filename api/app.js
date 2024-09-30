@@ -7,6 +7,7 @@ import cloudinary from 'cloudinary';
 import connectDB from './config/db.js';
 import userRouter from './routes/userRoutes.js';
 import productRouter from './routes/productRoutes.js';
+import categoryRouter from './routes/categoryRoutes.js';
 // dot env config
 
 dotenv.config();
@@ -38,6 +39,7 @@ cloudinary.v2.config({
 // Router
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/product', productRouter);
+app.use('/api/v1/category', categoryRouter);
 
 app.listen(port, () => {
     console.log(`Server Up! ${port} on ${process.env.NODE_ENV} Mode.`);
